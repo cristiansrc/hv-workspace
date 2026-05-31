@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>graphify - graphify-out/graph.html</title>
+<script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"
+        integrity="sha384-Ux6phic9PEHJ38YtrijhkzyJ8yQlH8i/+buBR8s3mAZOJrP1gwyvAcIYl3GWtpX1"
+        crossorigin="anonymous"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
+  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: #aaa; user-select: none; }
+  #legend-controls label:hover { color: #e0e0e0; }
+  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid #3a3a5e; border-radius: 3px; background: #0f0f1a; cursor: pointer; position: relative; flex-shrink: 0; }
+  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
+  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
+  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend-controls">
+      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">Select All</label>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">47 nodes &middot; 41 edges &middot; 7 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "readme_md", "label": "README.md", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "README.md", "community": 6, "community_name": "Community 6", "source_file": "README.md", "file_type": "document", "degree": 1}, {"id": "hv_workspace_readme_hv_workspace", "label": "hv-workspace", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "hv-workspace", "community": 6, "community_name": "Community 6", "source_file": "README.md", "file_type": "document", "degree": 1}, {"id": "docs_architecture_system_landscape_md", "label": "system-landscape.md", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "system-landscape.md", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "architecture_system_landscape_hv_workspace_solution_workspace", "label": "HV Workspace - Solution Workspace", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "HV Workspace - Solution Workspace", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 6}, {"id": "architecture_system_landscape_repositorios_del_ecosistema", "label": "Repositorios del Ecosistema", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Repositorios del Ecosistema", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "architecture_system_landscape_estructura_del_workspace", "label": "Estructura del Workspace", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Estructura del Workspace", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "architecture_system_landscape_convenci\u00f3n_de_nombres", "label": "Convenci\u00f3n de Nombres", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Convenci\u00f3n de Nombres", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "architecture_system_landscape_deploy_actual", "label": "Deploy Actual", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Deploy Actual", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "architecture_system_landscape_comunicaci\u00f3n_entre_servicios", "label": "Comunicaci\u00f3n entre Servicios", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Comunicaci\u00f3n entre Servicios", "community": 3, "community_name": "Community 3", "source_file": "docs/architecture/system-landscape.md", "file_type": "document", "degree": 1}, {"id": "docs_architecture_context_map_md", "label": "context-map.md", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "context-map.md", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_context_map_hv_ecosystem", "label": "Context Map - HV Ecosystem", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Context Map - HV Ecosystem", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 3}, {"id": "architecture_context_map_bounded_contexts", "label": "Bounded Contexts", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 35.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Bounded Contexts", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 5}, {"id": "architecture_context_map_1_resume_management_context_hv_go_ms_resume", "label": "1. Resume Management Context (hv-go-ms-resume)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "1. Resume Management Context (hv-go-ms-resume)", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_2_cv_rendering_context_hv_py_ms_render_cv", "label": "2. CV Rendering Context (hv-py-ms-render-cv)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "2. CV Rendering Context (hv-py-ms-render-cv)", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_3_public_portal_context_hv_rt_fr_portal", "label": "3. Public Portal Context (hv-rt-fr-portal)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "3. Public Portal Context (hv-rt-fr-portal)", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_4_admin_panel_context_hv_rt_fr_admin", "label": "4. Admin Panel Context (hv-rt-fr-admin)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "4. Admin Panel Context (hv-rt-fr-admin)", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_context_map_relationships", "label": "Context Map Relationships", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Context Map Relationships", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 3}, {"id": "architecture_context_map_relaciones", "label": "Relaciones", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Relaciones", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_context_map_anti_corruption_layers", "label": "Anti-Corruption Layers", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Anti-Corruption Layers", "community": 0, "community_name": "Community 0", "source_file": "docs/architecture/context-map.md", "file_type": "document", "degree": 1}, {"id": "docs_architecture_integration_map_md", "label": "integration-map.md", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "integration-map.md", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_integration_map_hv_ecosystem", "label": "Integration Map - HV Ecosystem", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Integration Map - HV Ecosystem", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 4}, {"id": "architecture_integration_map_integraciones_entre_servicios", "label": "Integraciones entre Servicios", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Integraciones entre Servicios", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 6}, {"id": "architecture_integration_map_1_frontend_p\u00fablico_ms_resume_sync_rest", "label": "1. Frontend P\u00fablico \u2192 ms-resume (Sync REST)", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "1. Frontend P\u00fablico \u2192 ms-resume (Sync REST)", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_2_admin_panel_ms_resume_sync_rest", "label": "2. Admin Panel \u2192 ms-resume (Sync REST)", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "2. Admin Panel \u2192 ms-resume (Sync REST)", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_3_ms_resume_ms_render_cv_sync_http_interno", "label": "3. ms-resume \u2192 ms-render-cv (Sync HTTP Interno)", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "3. ms-resume \u2192 ms-render-cv (Sync HTTP Interno)", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_4_ms_resume_aws_s3_sync_sdk", "label": "4. ms-resume \u2192 AWS S3 (Sync SDK)", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "4. ms-resume \u2192 AWS S3 (Sync SDK)", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_5_ms_resume_telegram_bot_sync_http", "label": "5. ms-resume \u2192 Telegram Bot (Sync HTTP)", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "5. ms-resume \u2192 Telegram Bot (Sync HTTP)", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_error_contract", "label": "Error Contract", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Error Contract", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "architecture_integration_map_data_ownership", "label": "Data Ownership", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Data Ownership", "community": 1, "community_name": "Community 1", "source_file": "docs/architecture/integration-map.md", "file_type": "document", "degree": 1}, {"id": "docs_architecture_workspace_mapping_md", "label": "workspace-mapping.md", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "workspace-mapping.md", "community": 4, "community_name": "Community 4", "source_file": "docs/architecture/workspace-mapping.md", "file_type": "document", "degree": 1}, {"id": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem", "label": "Workspace Mapping - HV Ecosystem", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Workspace Mapping - HV Ecosystem", "community": 4, "community_name": "Community 4", "source_file": "docs/architecture/workspace-mapping.md", "file_type": "document", "degree": 4}, {"id": "architecture_workspace_mapping_mapeo_de_repositorios", "label": "Mapeo de Repositorios", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Mapeo de Repositorios", "community": 4, "community_name": "Community 4", "source_file": "docs/architecture/workspace-mapping.md", "file_type": "document", "degree": 1}, {"id": "architecture_workspace_mapping_repositorios_legacy_a_deprecar", "label": "Repositorios Legacy (a deprecar)", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Repositorios Legacy (a deprecar)", "community": 4, "community_name": "Community 4", "source_file": "docs/architecture/workspace-mapping.md", "file_type": "document", "degree": 1}, {"id": "architecture_workspace_mapping_notas", "label": "Notas", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Notas", "community": 4, "community_name": "Community 4", "source_file": "docs/architecture/workspace-mapping.md", "file_type": "document", "degree": 1}, {"id": "docs_architecture_decision_records_adr_001_migration_to_go_md", "label": "ADR-001-migration-to-go.md", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "ADR-001-migration-to-go.md", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "label": "ADR-001: Migraci\u00f3n de ms-resume a Go y Separaci\u00f3n de Repositorios", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "ADR-001: Migraci\u00f3n de ms-resume a Go y Separaci\u00f3n de Repositorios", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 6}, {"id": "decision_records_adr_001_migration_to_go_contexto", "label": "Contexto", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Contexto", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_decisi\u00f3n", "label": "Decisi\u00f3n", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Decisi\u00f3n", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_alternativas_consideradas", "label": "Alternativas Consideradas", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Alternativas Consideradas", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 4}, {"id": "decision_records_adr_001_migration_to_go_a_reimplementar_rendercv_en_go_desde_cero", "label": "A: Reimplementar RenderCV en Go desde cero", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "A: Reimplementar RenderCV en Go desde cero", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_b_embeber_python_dentro_de_go_go_python3", "label": "B: Embeber Python dentro de Go (go-python3)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "B: Embeber Python dentro de Go (go-python3)", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_c_mantener_spring_boot", "label": "C: Mantener Spring Boot", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "C: Mantener Spring Boot", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_consecuencias", "label": "Consecuencias", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Consecuencias", "community": 5, "community_name": "Community 5", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 4}, {"id": "decision_records_adr_001_migration_to_go_positivas", "label": "Positivas", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Positivas", "community": 5, "community_name": "Community 5", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_negativas", "label": "Negativas", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Negativas", "community": 5, "community_name": "Community 5", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_riesgos_mitigados", "label": "Riesgos Mitigados", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Riesgos Mitigados", "community": 5, "community_name": "Community 5", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}, {"id": "decision_records_adr_001_migration_to_go_servicios_resultantes", "label": "Servicios Resultantes", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Servicios Resultantes", "community": 2, "community_name": "Community 2", "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md", "file_type": "document", "degree": 1}];
+const RAW_EDGES = [{"from": "readme_md", "to": "hv_workspace_readme_hv_workspace", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture_system_landscape_md", "to": "architecture_system_landscape_hv_workspace_solution_workspace", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_system_landscape_hv_workspace_solution_workspace", "to": "architecture_system_landscape_comunicaci\u00f3n_entre_servicios", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_system_landscape_hv_workspace_solution_workspace", "to": "architecture_system_landscape_convenci\u00f3n_de_nombres", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_system_landscape_hv_workspace_solution_workspace", "to": "architecture_system_landscape_deploy_actual", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_system_landscape_hv_workspace_solution_workspace", "to": "architecture_system_landscape_estructura_del_workspace", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_system_landscape_hv_workspace_solution_workspace", "to": "architecture_system_landscape_repositorios_del_ecosistema", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture_context_map_md", "to": "architecture_context_map_context_map_hv_ecosystem", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_context_map_hv_ecosystem", "to": "architecture_context_map_bounded_contexts", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_context_map_hv_ecosystem", "to": "architecture_context_map_context_map_relationships", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_bounded_contexts", "to": "architecture_context_map_1_resume_management_context_hv_go_ms_resume", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_bounded_contexts", "to": "architecture_context_map_2_cv_rendering_context_hv_py_ms_render_cv", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_bounded_contexts", "to": "architecture_context_map_3_public_portal_context_hv_rt_fr_portal", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_bounded_contexts", "to": "architecture_context_map_4_admin_panel_context_hv_rt_fr_admin", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_context_map_relationships", "to": "architecture_context_map_anti_corruption_layers", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_context_map_context_map_relationships", "to": "architecture_context_map_relaciones", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture_integration_map_md", "to": "architecture_integration_map_integration_map_hv_ecosystem", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integration_map_hv_ecosystem", "to": "architecture_integration_map_data_ownership", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integration_map_hv_ecosystem", "to": "architecture_integration_map_error_contract", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integration_map_hv_ecosystem", "to": "architecture_integration_map_integraciones_entre_servicios", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integraciones_entre_servicios", "to": "architecture_integration_map_1_frontend_p\u00fablico_ms_resume_sync_rest", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integraciones_entre_servicios", "to": "architecture_integration_map_2_admin_panel_ms_resume_sync_rest", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integraciones_entre_servicios", "to": "architecture_integration_map_3_ms_resume_ms_render_cv_sync_http_interno", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integraciones_entre_servicios", "to": "architecture_integration_map_4_ms_resume_aws_s3_sync_sdk", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_integration_map_integraciones_entre_servicios", "to": "architecture_integration_map_5_ms_resume_telegram_bot_sync_http", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture_workspace_mapping_md", "to": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem", "to": "architecture_workspace_mapping_mapeo_de_repositorios", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem", "to": "architecture_workspace_mapping_notas", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem", "to": "architecture_workspace_mapping_repositorios_legacy_a_deprecar", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture_decision_records_adr_001_migration_to_go_md", "to": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "to": "decision_records_adr_001_migration_to_go_alternativas_consideradas", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "to": "decision_records_adr_001_migration_to_go_consecuencias", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "to": "decision_records_adr_001_migration_to_go_contexto", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "to": "decision_records_adr_001_migration_to_go_decisi\u00f3n", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios", "to": "decision_records_adr_001_migration_to_go_servicios_resultantes", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_alternativas_consideradas", "to": "decision_records_adr_001_migration_to_go_a_reimplementar_rendercv_en_go_desde_cero", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_alternativas_consideradas", "to": "decision_records_adr_001_migration_to_go_b_embeber_python_dentro_de_go_go_python3", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_alternativas_consideradas", "to": "decision_records_adr_001_migration_to_go_c_mantener_spring_boot", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_consecuencias", "to": "decision_records_adr_001_migration_to_go_negativas", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_consecuencias", "to": "decision_records_adr_001_migration_to_go_positivas", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "decision_records_adr_001_migration_to_go_consecuencias", "to": "decision_records_adr_001_migration_to_go_riesgos_mitigados", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Community 0", "count": 10}, {"cid": 1, "color": "#F28E2B", "label": "Community 1", "count": 10}, {"cid": 2, "color": "#E15759", "label": "Community 2", "count": 9}, {"cid": 3, "color": "#76B7B2", "label": "Community 3", "count": 7}, {"cid": 4, "color": "#59A14F", "label": "Community 4", "count": 5}, {"cid": 5, "color": "#EDC948", "label": "Community 5", "count": 4}, {"cid": 6, "color": "#B07AA1", "label": "Community 6", "count": 2}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${esc(n.label)}</b></div>
+    <div class="field">Type: ${esc(n._file_type || 'unknown')}</div>
+    <div class="field">Community: ${esc(n._community_name)}</div>
+    <div class="field">Source: ${esc(n._source_file || '-')}</div>
+    <div class="field">Degree: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+const selectAllCb = document.getElementById('select-all-cb');
+
+function updateSelectAllState() {
+  const total = LEGEND.length;
+  const hidden = hiddenCommunities.size;
+  selectAllCb.checked = hidden === 0;
+  selectAllCb.indeterminate = hidden > 0 && hidden < total;
+}
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  document.querySelectorAll('.legend-cb').forEach(cb => {
+    cb.checked = !hide;
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+  updateSelectAllState();
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'legend-cb';
+  cb.checked = true;
+  cb.addEventListener('change', (e) => {
+    e.stopPropagation();
+    if (cb.checked) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: !cb.checked }));
+    nodesDS.update(updates);
+    updateSelectAllState();
+  });
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.prepend(cb);
+  item.onclick = (e) => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const expanded = positions.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>
