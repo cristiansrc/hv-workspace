@@ -1,0 +1,3 @@
+# Este archivo mantiene la carpeta projects/ en el repo.
+# El contenido de projects/ es ignorado por .gitignore
+# Cada proyecto se clona aquí de forma independiente.
