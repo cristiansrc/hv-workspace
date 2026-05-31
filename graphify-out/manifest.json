@@ -1,0 +1,32 @@
+{
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/README.md": {
+    "mtime": 1780263125.0157335,
+    "ast_hash": "24f6ce7819cc521fa2879a2169fc64f2",
+    "semantic_hash": ""
+  },
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/docs/architecture/system-landscape.md": {
+    "mtime": 1780266594.3755631,
+    "ast_hash": "ab0b7d5491069de31f1cb99d9eb8af60",
+    "semantic_hash": ""
+  },
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/docs/architecture/context-map.md": {
+    "mtime": 1780266636.0516737,
+    "ast_hash": "877732fea390f0ab0b137dde850e32eb",
+    "semantic_hash": ""
+  },
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/docs/architecture/integration-map.md": {
+    "mtime": 1780266659.4378114,
+    "ast_hash": "47782b437756dc10f9ee64ccd749738b",
+    "semantic_hash": ""
+  },
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/docs/architecture/workspace-mapping.md": {
+    "mtime": 1780266672.5038884,
+    "ast_hash": "d3cd7a5b11a6a935a7738f7535e61ad3",
+    "semantic_hash": ""
+  },
+  "/home/cristiansrc/Documentos/Proyectos/hv-workspace/docs/architecture/decision-records/ADR-001-migration-to-go.md": {
+    "mtime": 1780266619.1223984,
+    "ast_hash": "8899c7e8d6d93d5ffdfeabdab4018578",
+    "semantic_hash": ""
+  }
+}

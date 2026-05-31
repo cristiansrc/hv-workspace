@@ -1,0 +1,844 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 6,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "hv-workspace",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "hv_workspace_readme_hv_workspace",
+      "community": 6,
+      "norm_label": "hv-workspace"
+    },
+    {
+      "label": "system-landscape.md",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L1",
+      "id": "docs_architecture_system_landscape_md",
+      "community": 3,
+      "norm_label": "system-landscape.md"
+    },
+    {
+      "label": "HV Workspace - Solution Workspace",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L1",
+      "id": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "community": 3,
+      "norm_label": "hv workspace - solution workspace"
+    },
+    {
+      "label": "Repositorios del Ecosistema",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L5",
+      "id": "architecture_system_landscape_repositorios_del_ecosistema",
+      "community": 3,
+      "norm_label": "repositorios del ecosistema"
+    },
+    {
+      "label": "Estructura del Workspace",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L15",
+      "id": "architecture_system_landscape_estructura_del_workspace",
+      "community": 3,
+      "norm_label": "estructura del workspace"
+    },
+    {
+      "label": "Convenci\u00f3n de Nombres",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L32",
+      "id": "architecture_system_landscape_convenci\u00f3n_de_nombres",
+      "community": 3,
+      "norm_label": "convencion de nombres"
+    },
+    {
+      "label": "Deploy Actual",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L40",
+      "id": "architecture_system_landscape_deploy_actual",
+      "community": 3,
+      "norm_label": "deploy actual"
+    },
+    {
+      "label": "Comunicaci\u00f3n entre Servicios",
+      "file_type": "document",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L46",
+      "id": "architecture_system_landscape_comunicaci\u00f3n_entre_servicios",
+      "community": 3,
+      "norm_label": "comunicacion entre servicios"
+    },
+    {
+      "label": "context-map.md",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L1",
+      "id": "docs_architecture_context_map_md",
+      "community": 0,
+      "norm_label": "context-map.md"
+    },
+    {
+      "label": "Context Map - HV Ecosystem",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L1",
+      "id": "architecture_context_map_context_map_hv_ecosystem",
+      "community": 0,
+      "norm_label": "context map - hv ecosystem"
+    },
+    {
+      "label": "Bounded Contexts",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L3",
+      "id": "architecture_context_map_bounded_contexts",
+      "community": 0,
+      "norm_label": "bounded contexts"
+    },
+    {
+      "label": "1. Resume Management Context (hv-go-ms-resume)",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L5",
+      "id": "architecture_context_map_1_resume_management_context_hv_go_ms_resume",
+      "community": 0,
+      "norm_label": "1. resume management context (hv-go-ms-resume)"
+    },
+    {
+      "label": "2. CV Rendering Context (hv-py-ms-render-cv)",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L13",
+      "id": "architecture_context_map_2_cv_rendering_context_hv_py_ms_render_cv",
+      "community": 0,
+      "norm_label": "2. cv rendering context (hv-py-ms-render-cv)"
+    },
+    {
+      "label": "3. Public Portal Context (hv-rt-fr-portal)",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L21",
+      "id": "architecture_context_map_3_public_portal_context_hv_rt_fr_portal",
+      "community": 0,
+      "norm_label": "3. public portal context (hv-rt-fr-portal)"
+    },
+    {
+      "label": "4. Admin Panel Context (hv-rt-fr-admin)",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L27",
+      "id": "architecture_context_map_4_admin_panel_context_hv_rt_fr_admin",
+      "community": 0,
+      "norm_label": "4. admin panel context (hv-rt-fr-admin)"
+    },
+    {
+      "label": "Context Map Relationships",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L33",
+      "id": "architecture_context_map_context_map_relationships",
+      "community": 0,
+      "norm_label": "context map relationships"
+    },
+    {
+      "label": "Relaciones",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L53",
+      "id": "architecture_context_map_relaciones",
+      "community": 0,
+      "norm_label": "relaciones"
+    },
+    {
+      "label": "Anti-Corruption Layers",
+      "file_type": "document",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L61",
+      "id": "architecture_context_map_anti_corruption_layers",
+      "community": 0,
+      "norm_label": "anti-corruption layers"
+    },
+    {
+      "label": "integration-map.md",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L1",
+      "id": "docs_architecture_integration_map_md",
+      "community": 1,
+      "norm_label": "integration-map.md"
+    },
+    {
+      "label": "Integration Map - HV Ecosystem",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L1",
+      "id": "architecture_integration_map_integration_map_hv_ecosystem",
+      "community": 1,
+      "norm_label": "integration map - hv ecosystem"
+    },
+    {
+      "label": "Integraciones entre Servicios",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L3",
+      "id": "architecture_integration_map_integraciones_entre_servicios",
+      "community": 1,
+      "norm_label": "integraciones entre servicios"
+    },
+    {
+      "label": "1. Frontend P\u00fablico \u2192 ms-resume (Sync REST)",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L5",
+      "id": "architecture_integration_map_1_frontend_p\u00fablico_ms_resume_sync_rest",
+      "community": 1,
+      "norm_label": "1. frontend publico \u2192 ms-resume (sync rest)"
+    },
+    {
+      "label": "2. Admin Panel \u2192 ms-resume (Sync REST)",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L22",
+      "id": "architecture_integration_map_2_admin_panel_ms_resume_sync_rest",
+      "community": 1,
+      "norm_label": "2. admin panel \u2192 ms-resume (sync rest)"
+    },
+    {
+      "label": "3. ms-resume \u2192 ms-render-cv (Sync HTTP Interno)",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L37",
+      "id": "architecture_integration_map_3_ms_resume_ms_render_cv_sync_http_interno",
+      "community": 1,
+      "norm_label": "3. ms-resume \u2192 ms-render-cv (sync http interno)"
+    },
+    {
+      "label": "4. ms-resume \u2192 AWS S3 (Sync SDK)",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L55",
+      "id": "architecture_integration_map_4_ms_resume_aws_s3_sync_sdk",
+      "community": 1,
+      "norm_label": "4. ms-resume \u2192 aws s3 (sync sdk)"
+    },
+    {
+      "label": "5. ms-resume \u2192 Telegram Bot (Sync HTTP)",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L67",
+      "id": "architecture_integration_map_5_ms_resume_telegram_bot_sync_http",
+      "community": 1,
+      "norm_label": "5. ms-resume \u2192 telegram bot (sync http)"
+    },
+    {
+      "label": "Error Contract",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L79",
+      "id": "architecture_integration_map_error_contract",
+      "community": 1,
+      "norm_label": "error contract"
+    },
+    {
+      "label": "Data Ownership",
+      "file_type": "document",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L96",
+      "id": "architecture_integration_map_data_ownership",
+      "community": 1,
+      "norm_label": "data ownership"
+    },
+    {
+      "label": "workspace-mapping.md",
+      "file_type": "document",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L1",
+      "id": "docs_architecture_workspace_mapping_md",
+      "community": 4,
+      "norm_label": "workspace-mapping.md"
+    },
+    {
+      "label": "Workspace Mapping - HV Ecosystem",
+      "file_type": "document",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L1",
+      "id": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem",
+      "community": 4,
+      "norm_label": "workspace mapping - hv ecosystem"
+    },
+    {
+      "label": "Mapeo de Repositorios",
+      "file_type": "document",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L3",
+      "id": "architecture_workspace_mapping_mapeo_de_repositorios",
+      "community": 4,
+      "norm_label": "mapeo de repositorios"
+    },
+    {
+      "label": "Repositorios Legacy (a deprecar)",
+      "file_type": "document",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L13",
+      "id": "architecture_workspace_mapping_repositorios_legacy_a_deprecar",
+      "community": 4,
+      "norm_label": "repositorios legacy (a deprecar)"
+    },
+    {
+      "label": "Notas",
+      "file_type": "document",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L22",
+      "id": "architecture_workspace_mapping_notas",
+      "community": 4,
+      "norm_label": "notas"
+    },
+    {
+      "label": "ADR-001-migration-to-go.md",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L1",
+      "id": "docs_architecture_decision_records_adr_001_migration_to_go_md",
+      "community": 2,
+      "norm_label": "adr-001-migration-to-go.md"
+    },
+    {
+      "label": "ADR-001: Migraci\u00f3n de ms-resume a Go y Separaci\u00f3n de Repositorios",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L1",
+      "id": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "community": 2,
+      "norm_label": "adr-001: migracion de ms-resume a go y separacion de repositorios"
+    },
+    {
+      "label": "Contexto",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L7",
+      "id": "decision_records_adr_001_migration_to_go_contexto",
+      "community": 2,
+      "norm_label": "contexto"
+    },
+    {
+      "label": "Decisi\u00f3n",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L22",
+      "id": "decision_records_adr_001_migration_to_go_decisi\u00f3n",
+      "community": 2,
+      "norm_label": "decision"
+    },
+    {
+      "label": "Alternativas Consideradas",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L47",
+      "id": "decision_records_adr_001_migration_to_go_alternativas_consideradas",
+      "community": 2,
+      "norm_label": "alternativas consideradas"
+    },
+    {
+      "label": "A: Reimplementar RenderCV en Go desde cero",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L49",
+      "id": "decision_records_adr_001_migration_to_go_a_reimplementar_rendercv_en_go_desde_cero",
+      "community": 2,
+      "norm_label": "a: reimplementar rendercv en go desde cero"
+    },
+    {
+      "label": "B: Embeber Python dentro de Go (go-python3)",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L52",
+      "id": "decision_records_adr_001_migration_to_go_b_embeber_python_dentro_de_go_go_python3",
+      "community": 2,
+      "norm_label": "b: embeber python dentro de go (go-python3)"
+    },
+    {
+      "label": "C: Mantener Spring Boot",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L55",
+      "id": "decision_records_adr_001_migration_to_go_c_mantener_spring_boot",
+      "community": 2,
+      "norm_label": "c: mantener spring boot"
+    },
+    {
+      "label": "Consecuencias",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L58",
+      "id": "decision_records_adr_001_migration_to_go_consecuencias",
+      "community": 5,
+      "norm_label": "consecuencias"
+    },
+    {
+      "label": "Positivas",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L60",
+      "id": "decision_records_adr_001_migration_to_go_positivas",
+      "community": 5,
+      "norm_label": "positivas"
+    },
+    {
+      "label": "Negativas",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L67",
+      "id": "decision_records_adr_001_migration_to_go_negativas",
+      "community": 5,
+      "norm_label": "negativas"
+    },
+    {
+      "label": "Riesgos Mitigados",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L72",
+      "id": "decision_records_adr_001_migration_to_go_riesgos_mitigados",
+      "community": 5,
+      "norm_label": "riesgos mitigados"
+    },
+    {
+      "label": "Servicios Resultantes",
+      "file_type": "document",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L79",
+      "id": "decision_records_adr_001_migration_to_go_servicios_resultantes",
+      "community": 2,
+      "norm_label": "servicios resultantes"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme_md",
+      "target": "hv_workspace_readme_hv_workspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_system_landscape_md",
+      "target": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "target": "architecture_system_landscape_comunicaci\u00f3n_entre_servicios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "target": "architecture_system_landscape_convenci\u00f3n_de_nombres",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "target": "architecture_system_landscape_deploy_actual",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "target": "architecture_system_landscape_estructura_del_workspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/system-landscape.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "architecture_system_landscape_hv_workspace_solution_workspace",
+      "target": "architecture_system_landscape_repositorios_del_ecosistema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_context_map_md",
+      "target": "architecture_context_map_context_map_hv_ecosystem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "architecture_context_map_context_map_hv_ecosystem",
+      "target": "architecture_context_map_bounded_contexts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "architecture_context_map_context_map_hv_ecosystem",
+      "target": "architecture_context_map_context_map_relationships",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "architecture_context_map_bounded_contexts",
+      "target": "architecture_context_map_1_resume_management_context_hv_go_ms_resume",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "architecture_context_map_bounded_contexts",
+      "target": "architecture_context_map_2_cv_rendering_context_hv_py_ms_render_cv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "architecture_context_map_bounded_contexts",
+      "target": "architecture_context_map_3_public_portal_context_hv_rt_fr_portal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "architecture_context_map_bounded_contexts",
+      "target": "architecture_context_map_4_admin_panel_context_hv_rt_fr_admin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "architecture_context_map_context_map_relationships",
+      "target": "architecture_context_map_anti_corruption_layers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/context-map.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "architecture_context_map_context_map_relationships",
+      "target": "architecture_context_map_relaciones",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_integration_map_md",
+      "target": "architecture_integration_map_integration_map_hv_ecosystem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integration_map_hv_ecosystem",
+      "target": "architecture_integration_map_data_ownership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integration_map_hv_ecosystem",
+      "target": "architecture_integration_map_error_contract",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integration_map_hv_ecosystem",
+      "target": "architecture_integration_map_integraciones_entre_servicios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integraciones_entre_servicios",
+      "target": "architecture_integration_map_1_frontend_p\u00fablico_ms_resume_sync_rest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integraciones_entre_servicios",
+      "target": "architecture_integration_map_2_admin_panel_ms_resume_sync_rest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integraciones_entre_servicios",
+      "target": "architecture_integration_map_3_ms_resume_ms_render_cv_sync_http_interno",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integraciones_entre_servicios",
+      "target": "architecture_integration_map_4_ms_resume_aws_s3_sync_sdk",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/integration-map.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "architecture_integration_map_integraciones_entre_servicios",
+      "target": "architecture_integration_map_5_ms_resume_telegram_bot_sync_http",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_workspace_mapping_md",
+      "target": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem",
+      "target": "architecture_workspace_mapping_mapeo_de_repositorios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem",
+      "target": "architecture_workspace_mapping_notas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/workspace-mapping.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "architecture_workspace_mapping_workspace_mapping_hv_ecosystem",
+      "target": "architecture_workspace_mapping_repositorios_legacy_a_deprecar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_decision_records_adr_001_migration_to_go_md",
+      "target": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "target": "decision_records_adr_001_migration_to_go_alternativas_consideradas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "target": "decision_records_adr_001_migration_to_go_consecuencias",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "target": "decision_records_adr_001_migration_to_go_contexto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "target": "decision_records_adr_001_migration_to_go_decisi\u00f3n",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_adr_001_migraci\u00f3n_de_ms_resume_a_go_y_separaci\u00f3n_de_repositorios",
+      "target": "decision_records_adr_001_migration_to_go_servicios_resultantes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_alternativas_consideradas",
+      "target": "decision_records_adr_001_migration_to_go_a_reimplementar_rendercv_en_go_desde_cero",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_alternativas_consideradas",
+      "target": "decision_records_adr_001_migration_to_go_b_embeber_python_dentro_de_go_go_python3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_alternativas_consideradas",
+      "target": "decision_records_adr_001_migration_to_go_c_mantener_spring_boot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_consecuencias",
+      "target": "decision_records_adr_001_migration_to_go_negativas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_consecuencias",
+      "target": "decision_records_adr_001_migration_to_go_positivas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture/decision-records/ADR-001-migration-to-go.md",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "decision_records_adr_001_migration_to_go_consecuencias",
+      "target": "decision_records_adr_001_migration_to_go_riesgos_mitigados",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "21578a80495175a90271139a1bfad56748a9553a"
+}

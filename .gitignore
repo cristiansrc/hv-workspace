@@ -1,6 +1,8 @@
 # Ignorar contenido de projects/ pero mantener la carpeta en el repo
 projects/*
+graphify-out/cache/*
 !projects/.gitkeep
+
 
 # OS
 .DS_Store
