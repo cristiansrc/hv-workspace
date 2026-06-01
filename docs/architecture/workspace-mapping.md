@@ -4,8 +4,8 @@
 
 | Ruta Local | Repositorio Remoto | Bounded Context | Owner | Estado |
 |---|---|---|---|---|
-| `projects/hv-go-ms-resume` | `github.com/cristiansrc/hv-go-ms-resume` | Resume Management | cristiansrc | 🔄 En desarrollo |
-| `projects/hv-py-ms-render-cv` | `github.com/cristiansrc/hv-py-ms-render-cv` | CV Rendering | cristiansrc | 🔄 Migrando |
+| `projects/hv-go-ms-resume` | `github.com/cristiansrc/hv-go-ms-resume` | Resume Management | cristiansrc | ✅ Implementado |
+| `projects/hv-py-ms-render-cv` | `github.com/cristiansrc/hv-py-ms-render-cv` | CV Rendering | cristiansrc | ✅ Implementado |
 | `projects/hv-rt-fr-portal` | `github.com/cristiansrc/hv-rt-fr-portal` | Public Portal | cristiansrc | ✅ Activo |
 | `projects/hv-rt-fr-admin` | `github.com/cristiansrc/hv-rt-fr-admin` | Admin Panel | cristiansrc | ✅ Activo |
 | `projects/hv-dk-infra-cv` | `github.com/cristiansrc/hv-dk-infra-cv` | Deployment Infra | cristiansrc | 📋 Pendiente |

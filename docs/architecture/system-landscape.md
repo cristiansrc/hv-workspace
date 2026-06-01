@@ -6,8 +6,8 @@ Workspace de solución para el ecosistema del portfolio/CV de cristiansrc.com.
 
 | Repositorio | Tipo | Stack | Bounded Context | Estado |
 |---|---|---|---|---|
-| [hv-go-ms-resume](https://github.com/cristiansrc/hv-go-ms-resume) | Microservicio | Go 1.22+ | Resume Management | 🔄 En desarrollo |
-| [hv-py-ms-render-cv](https://github.com/cristiansrc/hv-py-ms-render-cv) | Microservicio | Python 3.12 + RenderCV | CV Rendering | 🔄 Migrando |
+| [hv-go-ms-resume](https://github.com/cristiansrc/hv-go-ms-resume) | Microservicio | Go 1.22+ | Resume Management | ✅ Implementado |
+| [hv-py-ms-render-cv](https://github.com/cristiansrc/hv-py-ms-render-cv) | Microservicio | Python 3.12 + RenderCV | CV Rendering | ✅ Implementado |
 | [hv-rt-fr-portal](https://github.com/cristiansrc/hv-rt-fr-portal) | Frontend | Next.js 14 + React | Public Portal | ✅ Activo |
 | [hv-rt-fr-admin](https://github.com/cristiansrc/hv-rt-fr-admin) | Frontend | React 19 + Refine | Admin Panel | ✅ Activo |
 | [hv-dk-infra-cv](https://github.com/cristiansrc/hv-dk-infra-cv) | Infraestructura | Docker Compose + Nginx | Deployment | 📋 Pendiente |
